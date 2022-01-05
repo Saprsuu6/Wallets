@@ -88,7 +88,7 @@ namespace Wallet.Classes
 
         public static Person LoadPerson()
         {
-            Person? person = null;
+            Person? person = new Person();
             FileStream? stream = null;
 
             try

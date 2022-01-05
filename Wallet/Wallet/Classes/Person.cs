@@ -9,6 +9,13 @@ namespace Wallet.Classes
     [Serializable]
     internal class Person : IDisposable
     {
+        public Person()
+        {
+            Name = "Имя владельца";
+            Surname = "Фамилия владельца";
+            Phone = "Номер телефона владельца (+380)";
+        }
+
         public Person(string name, string surname, string phone)
         {
             Name = name;

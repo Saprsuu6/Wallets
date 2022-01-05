@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\coffe\\source\\repos\\Wallet\\Wallet\\Wallet.csproj": {}
+    "C:\\Users\\coffe\\Desktop\\Wallets\\Wallet\\Wallet\\Wallet.csproj": {}
   },
   "projects": {
-    "C:\\Users\\coffe\\source\\repos\\Wallet\\Wallet\\Wallet.csproj": {
+    "C:\\Users\\coffe\\Desktop\\Wallets\\Wallet\\Wallet\\Wallet.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\coffe\\source\\repos\\Wallet\\Wallet\\Wallet.csproj",
+        "projectUniqueName": "C:\\Users\\coffe\\Desktop\\Wallets\\Wallet\\Wallet\\Wallet.csproj",
         "projectName": "Wallet",
-        "projectPath": "C:\\Users\\coffe\\source\\repos\\Wallet\\Wallet\\Wallet.csproj",
+        "projectPath": "C:\\Users\\coffe\\Desktop\\Wallets\\Wallet\\Wallet\\Wallet.csproj",
         "packagesPath": "C:\\Users\\coffe\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\coffe\\source\\repos\\Wallet\\Wallet\\obj\\",
+        "outputPath": "C:\\Users\\coffe\\Desktop\\Wallets\\Wallet\\Wallet\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
