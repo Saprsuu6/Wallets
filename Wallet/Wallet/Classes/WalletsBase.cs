@@ -31,17 +31,17 @@ namespace Wallet.Classes
             Wallets = wallets;
             Converters = new List<Converter>()
             {
-                new ConverterUAH_USD("UAH_USD"),
-                new ConverterUAH_USD("USD_UAH"),
+                new ConverterUAH_USD(),
+                new ConverterUSD_UAH(),
 
-                new ConverterUAH_USD("UAH_EUR"),
-                new ConverterUAH_USD("EUR_UAH"),
+                new ConverterUAH_EUR(),
+                new ConverterEUR_UAH(),
 
-                new ConverterUAH_USD("UAH_GBR"),
-                new ConverterUAH_USD("GBR_UAH"),
+                new ConverterUAH_GBR(),
+                new ConverterGBR_UAH(),
 
-                new ConverterUAH_USD("UAH_RUB"),
-                new ConverterUAH_USD("RUB_UAH")
+                new ConverterUAH_RUB(),
+                new ConverterRUB_UAH()
             };
         }
 

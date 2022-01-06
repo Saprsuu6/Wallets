@@ -23,11 +23,27 @@
     </Window.Resources>
 
     <UniformGrid Background="#BAA654" Rows="2">
-        <TextBox Name="Money"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBox Grid.Column="0" Name="Money" TextChanged="Money_TextChanged"/>
+            <ComboBox Name="Currency" SelectedIndex="0" Grid.Column="2" Margin="5" 
+                      BorderThickness="0" VerticalAlignment="Center">
+                <ComboBoxItem Name="UAH" Content="UAH"/>
+                <ComboBoxItem Name="USD" Content="USD"/>
+                <ComboBoxItem Name="GBR" Content="GBR"/>
+                <ComboBoxItem Name="EUR" Content="EUR"/>
+                <ComboBoxItem Name="RUB" Content="RUB"/>
+            </ComboBox>
+        </Grid>
+
 
         <UniformGrid Columns="2">
-            <Button Content="Отмена"/>
-            <Button IsEnabled="False" Content="Добавить" Name="Save"/>
+            <Button Content="Отмена" Click="Button_Click"/>
+            <Button IsEnabled="False" Content="Добавить" Name="Add" Click="Add_Click"/>
         </UniformGrid>
     </UniformGrid>
 </Window>

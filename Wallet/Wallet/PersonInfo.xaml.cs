@@ -36,12 +36,13 @@ namespace Wallet
             Close();
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        public void Button_Click_1(object sender, RoutedEventArgs e)
         {
             try
             {
                 save?.Invoke(this, EventArgs.Empty);
                 MessageBox.Show("Владелец был сохранен.", "", MessageBoxButton.OK, MessageBoxImage.Information);
+                Close();
             }
             catch (Exception ex)
             {
@@ -68,6 +69,8 @@ namespace Wallet
                         surename = false;
                     break;
                 case "PhoneNumber":
+                    PhoneNumber.Text = textBox.Text.Trim();
+
                     if (Regular.CheckNumber(textBox.Text))
                         phoneNumber = true;
                     else

@@ -9,7 +9,7 @@ namespace Wallet.Classes
     [Serializable]
     internal class Wallet : IComparable
     {
-        private static ulong number = 1000000000000000;
+        public static ulong number = 1000000000000000;
         private readonly string currency;
 
         public ulong CardNumber { get; private set; }

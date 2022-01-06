@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -35,6 +36,7 @@ namespace Wallet
         public event EventHandler<EventArgs>? removeCard = null;
         public event EventHandler<EventArgs>? searchCard = null;
         public event EventHandler<EventArgs>? updateAllCards = null;
+        public event EventHandler<EventArgs>? addSum = null;
 
         private void Button_Click(object sender, RoutedEventArgs? e)
         {
@@ -46,6 +48,32 @@ namespace Wallet
                 ownerChange?.Invoke(personInfo, new EventArgs());
                 personInfo.Owner = this;
                 personInfo.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            Effect = null;
+        }
+
+        public void AddMoney_Click(object sender, RoutedEventArgs? e)
+        {
+            Button? button = sender as Button;
+            UniformGrid? parrent1 = button?.Parent as UniformGrid;
+            UniformGrid? parrent2 = parrent1?.Parent as UniformGrid;
+            ListBoxItem? listBoxItem = parrent2?.Parent as ListBoxItem;
+
+            listBoxItem.IsSelected = true;
+
+            Effect = new BlurEffect();
+
+            try
+            {
+                AddMoney addMoney = new AddMoney();
+                addSum?.Invoke(addMoney, new EventArgs());
+                addMoney.Owner = this;
+                addMoney.ShowDialog();
             }
             catch (Exception ex)
             {

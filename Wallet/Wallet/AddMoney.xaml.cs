@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Wallet.Classes;
 
 namespace Wallet
 {
@@ -22,6 +23,39 @@ namespace Wallet
         public AddMoney()
         {
             InitializeComponent();
+        }
+
+        public event EventHandler<EventArgs>? addMoney = null;
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void Add_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                addMoney?.Invoke(this, EventArgs.Empty);
+                MessageBox.Show("Cумма была успешно переведена.", "", MessageBoxButton.OK, MessageBoxImage.Information);
+                Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void Money_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox? textBox = sender as TextBox;
+
+            Money.Text = Money.Text.Trim();
+
+            if (Regular.CheckMoney(textBox.Text))
+                Add.IsEnabled = true;
+            else
+                Add.IsEnabled = false;
         }
     }
 }

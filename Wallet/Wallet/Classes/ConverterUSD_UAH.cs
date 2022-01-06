@@ -8,7 +8,7 @@ namespace Wallet.Classes
 {
     internal class ConverterUSD_UAH : Converter
     {
-        public ConverterUSD_UAH(string naming)
+        public ConverterUSD_UAH()
         {
             naming = "USD_UAH";
         }
