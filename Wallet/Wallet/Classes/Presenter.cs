@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Data;
+using System.Windows.Media;
 
 namespace Wallet.Classes
 {
@@ -10,13 +15,19 @@ namespace Wallet.Classes
     {
         private Person? person = null;
         private readonly MainWindow? mainWindow = null;
-        
+        private WalletsBase? wallets = null;
+
+        public Thickness Thinknes { get; private set; }
+
         public Presenter(MainWindow mainWindow)
         {
             this.mainWindow = mainWindow;
             person = SaveLoad.LoadPerson();
+            wallets = new WalletsBase(SaveLoad.LoadWallets());
 
             mainWindow.ownerChange += new EventHandler<EventArgs>(OwnerChange);
+            mainWindow.addCard += new EventHandler<EventArgs>(AddCard);
+            mainWindow.removeCard += new EventHandler<EventArgs>(RemoveCard);
         }
 
         #region OwnerChange
@@ -25,27 +36,72 @@ namespace Wallet.Classes
             PersonInfo? personInfo = sender as PersonInfo;
             personInfo.save += new EventHandler<EventArgs>(SaveOwner);
 
-            personInfo.GetSetName.Text = person.Name;
-            personInfo.GetSetSurename.Text = person.Surname;
-            personInfo.GetSetPhoneNumber.Text = person.Phone;
+            personInfo.Name.Text = person.Name;
+            personInfo.Surename.Text = person.Surname;
+            personInfo.PhoneNumber.Text = person.Phone;
         }
 
         private void SaveOwner(object? sender, EventArgs e)
         {
             PersonInfo? personInfo = sender as PersonInfo;
 
-            person = new Person(personInfo.GetSetName.Text,
-                personInfo.GetSetSurename.Text,
-                personInfo.GetSetPhoneNumber.Text);
+            person = new Person(personInfo.Name.Text,
+                personInfo.Surename.Text,
+                personInfo.PhoneNumber.Text);
 
             UpadateOwner();
         }
 
         private void UpadateOwner()
         {
-            mainWindow.GetSetName.Text = person.Name;
-            mainWindow.GetSetSurename.Text = person.Surname;
-            mainWindow.GetSetPhoneNumber.Text = person.Phone;
+            mainWindow.Name.Text = person.Name;
+            mainWindow.Surename.Text = person.Surname;
+            mainWindow.PhoneNumber.Text = person.Phone;
+        }
+        #endregion
+
+        #region AddCard
+        private void AddCard(object? sender, EventArgs e)
+        {
+            if (mainWindow.Name.Text == "" &&
+                mainWindow.Surename.Text == "" &&
+                mainWindow.PhoneNumber.Text == "")
+                throw new ApplicationException("Добавьте владельца.");
+
+            string currency = mainWindow.Currency.Text;
+            Wallet wallet = new Wallet(person, currency);
+            wallets.AddWallet(wallet);
+
+            FillList(wallet);
+        }
+
+        private void FillList(Wallet wallet)
+        {
+            TextBlock number = new TextBlock();
+            number.Text = "Номер карты: " + wallet.CardNumber.ToString();
+            number.FontSize = 12;
+            TextBlock money = new TextBlock();
+            money.Text = "Сумма: " + wallet.Money.ToString();
+            money.FontSize = 12;
+
+            UniformGrid uniformGrid = new UniformGrid();
+            uniformGrid.Rows = 2;
+            uniformGrid.Children.Add(number);
+            uniformGrid.Children.Add(money);
+
+            ListBoxItem listBoxItem = new ListBoxItem();
+            Brush brush = new SolidColorBrush(Color.FromRgb(186, 231, 235));
+            listBoxItem.Background = brush;
+            listBoxItem.Content = uniformGrid;
+
+            mainWindow.Cards.Items.Add(listBoxItem); 
+        }
+        #endregion
+
+        #region RemoveCard
+        private void RemoveCard(object? sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
         #endregion
     }

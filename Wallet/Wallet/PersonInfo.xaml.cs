@@ -29,10 +29,6 @@ namespace Wallet
             InitializeComponent();
         }
 
-        public TextBox GetSetName { get => Name; }
-        public TextBox GetSetSurename { get => Surename; }
-        public TextBox GetSetPhoneNumber { get => PhoneNumber; }
-
         public event EventHandler<EventArgs>? save = null;
 
         private void Button_Click(object sender, RoutedEventArgs e)

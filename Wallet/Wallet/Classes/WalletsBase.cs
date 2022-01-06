@@ -26,9 +26,9 @@ namespace Wallet.Classes
             }
         }
 
-        public WalletsBase()
+        public WalletsBase(List<Wallet> wallets)
         {
-            Wallets = new List<Wallet>();
+            Wallets = wallets;
             Converters = new List<Converter>()
             {
                 new ConverterUAH_USD("UAH_USD"),
@@ -53,6 +53,7 @@ namespace Wallet.Classes
         public void AddWallet(Wallet wallet)
         {
             Wallets.Add(wallet);
+            Wallets.Sort();
         }
 
         public void RemoveWallet(ulong number)
@@ -60,7 +61,10 @@ namespace Wallet.Classes
             foreach (Wallet wallet in Wallets)
             {
                 if (wallet.CardNumber == number)
+                {
                     Wallets.Remove(wallet);
+                    Wallets.Sort();
+                }
             }
 
             throw new ApplicationException("Wallet are not found");

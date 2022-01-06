@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Wallet.Classes
 {
     [Serializable]
-    internal class Wallet
+    internal class Wallet : IComparable
     {
         private static ulong number = 1000000000000000;
         private readonly string currency;
@@ -42,6 +42,11 @@ namespace Wallet.Classes
 
             Money -= money;
             return money;
+        }
+
+        public int CompareTo(object? other)
+        {
+            return number.CompareTo((other as Wallet)?.CardNumber);
         }
     }
 }
