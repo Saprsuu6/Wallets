@@ -11,9 +11,9 @@ namespace Wallet.Classes
     {
         public Person()
         {
-            Name = "Имя владельца";
-            Surname = "Фамилия владельца";
-            Phone = "Номер телефона владельца (+380)";
+            Name = "";
+            Surname = "";
+            Phone = "";
         }
 
         public Person(string name, string surname, string phone)

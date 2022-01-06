@@ -11,11 +11,10 @@ namespace Wallet.Classes
     {
         private static ulong number = 1000000000000000;
         private readonly string currency;
-        private readonly Person owner;
 
         public ulong CardNumber { get; private set; }
         public string Currency => currency;
-        public Person Owner => owner;
+        public Person Owner { get; set; }
         public double Money { get; set; }
 
         public Wallet(Person owner, string currency) 
@@ -27,7 +26,7 @@ namespace Wallet.Classes
             CardNumber = number;
 
             this.currency = currency;
-            this.owner = owner;
+            Owner = owner;
         }
 
         public void AddMoney(double money)
@@ -46,7 +45,7 @@ namespace Wallet.Classes
 
         public int CompareTo(object? other)
         {
-            return number.CompareTo((other as Wallet)?.CardNumber);
+            return CardNumber.CompareTo((other as Wallet)?.CardNumber);
         }
     }
 }

@@ -47,3 +47,5 @@ C:\Users\coffe\Desktop\Wallets\Wallet\Wallet\obj\Debug\net5.0-windows\Wallet.pdb
 C:\Users\coffe\Desktop\Wallets\Wallet\Wallet\obj\Debug\net5.0-windows\Wallet.genruntimeconfig.cache
 C:\Users\coffe\Desktop\Wallets\Wallet\Wallet\obj\Debug\net5.0-windows\PersonInfo.g.cs
 C:\Users\coffe\Desktop\Wallets\Wallet\Wallet\obj\Debug\net5.0-windows\PersonInfo.baml
+C:\Users\coffe\Desktop\Wallets\Wallet\Wallet\obj\Debug\net5.0-windows\AddMoney.g.cs
+C:\Users\coffe\Desktop\Wallets\Wallet\Wallet\obj\Debug\net5.0-windows\AddMoney.baml

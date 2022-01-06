@@ -26,7 +26,7 @@ namespace Wallet.Classes
         {
             Directory.CreateDirectory("DataBase");
 
-            using (FileStream stream = new FileStream("DataBase/Wallets.json", FileMode.Create))
+            using (FileStream stream = new FileStream("DataBase/Consumptions.json", FileMode.Create))
             {
                 DataContractJsonSerializer jsonFormatter = new DataContractJsonSerializer(typeof(List<Consumption>));
                 jsonFormatter.WriteObject(stream, consumptions);
@@ -51,7 +51,7 @@ namespace Wallet.Classes
 
             try
             {
-                stream = new FileStream("DataBase/Consumptions.json", FileMode.Open);
+                stream = new FileStream("DataBase/Wallets.json", FileMode.Open);
                 DataContractJsonSerializer jsonFormatter = new DataContractJsonSerializer(typeof(List<Wallet>));
                 wallets = jsonFormatter.ReadObject(stream) as List<Wallet>;
                 stream.Close();
@@ -93,7 +93,7 @@ namespace Wallet.Classes
 
             try
             {
-                stream = new FileStream("DataBase/Consumptions.json", FileMode.Open);
+                stream = new FileStream("DataBase/PersonInfo.json", FileMode.Open);
                 DataContractJsonSerializer jsonFormatter = new DataContractJsonSerializer(typeof(Person));
                 person = jsonFormatter.ReadObject(stream) as Person;
                 stream.Close();

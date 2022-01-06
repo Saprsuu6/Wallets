@@ -11,19 +11,21 @@ using System.Windows.Media;
 
 namespace Wallet.Classes
 {
-    internal class Presenter
+    internal class Presenter : IDisposable
     {
         private Person? person = null;
         private readonly MainWindow? mainWindow = null;
         private WalletsBase? wallets = null;
 
-        public Thickness Thinknes { get; private set; }
-
         public Presenter(MainWindow mainWindow)
         {
             this.mainWindow = mainWindow;
+
             person = SaveLoad.LoadPerson();
+            UpadateOwner();
+
             wallets = new WalletsBase(SaveLoad.LoadWallets());
+            UpadateList();
 
             mainWindow.ownerChange += new EventHandler<EventArgs>(OwnerChange);
             mainWindow.addCard += new EventHandler<EventArgs>(AddCard);
@@ -32,15 +34,21 @@ namespace Wallet.Classes
             mainWindow.updateAllCards += new EventHandler<EventArgs>(UpadateAllCards);
         }
 
+        public void Dispose()
+        {
+            SaveLoad.SavePerson(person);
+            SaveLoad.SaveWallets(wallets.Wallets);
+        }
+
         #region OwnerChange
         private void OwnerChange(object? sender, EventArgs e)
         {
             PersonInfo? personInfo = sender as PersonInfo;
             personInfo.save += new EventHandler<EventArgs>(SaveOwner);
 
-            personInfo.Name.Text = person.Name;
-            personInfo.Surename.Text = person.Surname;
-            personInfo.PhoneNumber.Text = person.Phone;
+            personInfo.Name.Text = "Имя владельца";
+            personInfo.Surename.Text = "Фамилия владельца";
+            personInfo.PhoneNumber.Text = "Номер телефона владельца (+380)";
         }
 
         private void SaveOwner(object? sender, EventArgs e)
@@ -52,6 +60,7 @@ namespace Wallet.Classes
                 personInfo.PhoneNumber.Text);
 
             UpadateOwner();
+            UpadateOwnerInWallets();
         }
 
         private void UpadateOwner()
@@ -59,6 +68,12 @@ namespace Wallet.Classes
             mainWindow.Name.Text = person.Name;
             mainWindow.Surename.Text = person.Surname;
             mainWindow.PhoneNumber.Text = person.Phone;
+        }
+
+        private void UpadateOwnerInWallets()
+        {
+            foreach (Wallet wallet in wallets)
+                wallet.Owner = person;
         }
         #endregion
 
@@ -82,8 +97,9 @@ namespace Wallet.Classes
         private void RemoveCard(object? sender, EventArgs e)
         {
             ListBoxItem? listBoxItem = mainWindow?.Cards.SelectedItem as ListBoxItem;
-            UniformGrid? uniformGrid = listBoxItem?.Content as UniformGrid;
-            TextBlock? textBlock = uniformGrid?.Children[0] as TextBlock;
+            UniformGrid? uniformGrid1 = listBoxItem?.Content as UniformGrid;
+            UIElement? uIElement = uniformGrid1?.Children[0];
+            TextBlock? textBlock = (uIElement as UniformGrid)?.Children[0] as TextBlock;
 
             string str = textBlock.Text.Substring(13);
             ulong number = ulong.Parse(str);
@@ -161,15 +177,32 @@ namespace Wallet.Classes
             money.Text = "Сумма: " + wallet.Money.ToString() + " " + wallet.Currency;
             money.FontSize = 12;
 
-            UniformGrid uniformGrid = new UniformGrid();
-            uniformGrid.Rows = 2;
-            uniformGrid.Children.Add(number);
-            uniformGrid.Children.Add(money);
+            Button addMoney = new Button();
+            addMoney.Content = "Положить деньги";
+            addMoney.Margin = new Thickness(10, 1, 0, 1);
+            Button transferMoney = new Button();
+            transferMoney.Content = "Перевести деньги";
+            transferMoney.Margin = new Thickness(10, 1, 0, 1);
+
+            UniformGrid uniformGrid3 = new UniformGrid();
+            uniformGrid3.Rows = 2;
+            uniformGrid3.Children.Add(number);
+            uniformGrid3.Children.Add(money);
+
+            UniformGrid uniformGrid2 = new UniformGrid();
+            uniformGrid2.Rows = 2;
+            uniformGrid2.Children.Add(addMoney);
+            uniformGrid2.Children.Add(transferMoney);
+
+            UniformGrid uniformGrid1 = new UniformGrid();
+            uniformGrid1.Columns = 2;
+            uniformGrid1.Children.Add(uniformGrid3);
+            uniformGrid1.Children.Add(uniformGrid2);
 
             ListBoxItem listBoxItem = new ListBoxItem();
             Brush brush = new SolidColorBrush(Color.FromRgb(186, 231, 235));
             listBoxItem.Background = brush;
-            listBoxItem.Content = uniformGrid;
+            listBoxItem.Content = uniformGrid1;
 
             mainWindow?.Cards.Items.Add(listBoxItem);
         }

@@ -22,7 +22,7 @@
         </Style>
     </Window.Resources>
 
-    <UniformGrid Background="#63A878" Rows="4">
+    <UniformGrid Background="#9CBA54" Rows="4">
         <TextBox Name="Name" TextChanged="Name_TextChanged"/>
         <TextBox Name="Surename" TextChanged="Name_TextChanged"/>
         <TextBox Name="PhoneNumber" TextChanged="Name_TextChanged"/>

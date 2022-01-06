@@ -140,24 +140,5 @@ namespace Wallet.Classes
                 return currentWallet;
             }
         }
-
-        public List<Wallet> this[string phone]
-        {
-            get
-            {
-                List<Wallet> wallets = new List<Wallet>();
-
-                foreach (Wallet wallet in Wallets)
-                {
-                    if (wallet.Owner.Phone == phone)
-                        wallets.Add(wallet);
-                }
-
-                if (wallets.Count == 0)
-                    throw new ApplicationException("Wallet(s) was not found");
-
-                return wallets;
-            }
-        }
     }
 }
