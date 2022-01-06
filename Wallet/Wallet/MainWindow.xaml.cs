@@ -33,6 +33,8 @@ namespace Wallet
         public event EventHandler<EventArgs>? ownerChange = null;
         public event EventHandler<EventArgs>? addCard = null;
         public event EventHandler<EventArgs>? removeCard = null;
+        public event EventHandler<EventArgs>? searchCard = null;
+        public event EventHandler<EventArgs>? updateAllCards = null;
 
         private void Button_Click(object sender, RoutedEventArgs? e)
         {
@@ -81,11 +83,35 @@ namespace Wallet
             try
             {
                 removeCard?.Invoke(this, EventArgs.Empty);
-                MessageBox.Show("Карта была добавлена.", "", MessageBoxButton.OK, MessageBoxImage.Information);
+                Remove.IsEnabled = false;
+                MessageBox.Show("Карта была удалена.", "", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void CardNumberSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            CardNumberSearch.Text = CardNumberSearch.Text.Trim();
+
+            if (CardNumberSearch.Text.Length == 0)
+                updateAllCards?.Invoke(this, new EventArgs());
+            else
+            {
+                try
+                {
+                    if (Regular.CheckCardNumber(CardNumberSearch.Text))
+                        searchCard?.Invoke(this, new EventArgs());
+                    else
+                        throw new Exception();
+                }
+                catch (Exception)
+                {
+                    Cards.Items.Clear();
+                    NotExists.Visibility = Visibility.Visible;
+                }
             }
         }
     }

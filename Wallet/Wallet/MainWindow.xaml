@@ -68,6 +68,10 @@
             </Grid.RowDefinitions>
 
             <ListBox Name="Cards" Grid.Row="0" Background="#A1C3C2" Margin="10" SelectionChanged="Cards_SelectionChanged"/>
+            <TextBlock Name="EmptyList" Grid.Row="0" Text="Кошелёк пуст." 
+                       VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <TextBlock Visibility="Hidden" Name="NotExists" Grid.Row="0" Text="Карты с таким номером не существует." 
+                       VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
@@ -88,12 +92,24 @@
                     <ComboBoxItem Name="RUB" Content="RUB"/>
                 </ComboBox>
 
-                <Button IsEnabled="{Binding ElementName=Cards, Path=HasItems}" Grid.Column="3" Margin="5">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="Icons/searching.png" Margin="2"/>
-                        <TextBlock Text="Поиск" FontSize="12" Margin="5,0,0,0"/>
-                    </StackPanel>
-                </Button>
+                <Menu Grid.Column="3" Margin="5">
+                    <MenuItem Name="Search" IsEnabled="False">
+                        <MenuItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="Icons/searching.png" Margin="2"/>
+                                <TextBlock Text="Поиск" FontSize="12" Margin="5,0,0,0"/>
+                            </StackPanel>
+                        </MenuItem.Header>
+
+                        <MenuItem Header="По номеру карточки">
+                            <TextBox Width="150" Name="CardNumberSearch" TextChanged="CardNumberSearch_TextChanged"/>
+                        </MenuItem>
+
+                        <!--<MenuItem Header="По номеру телефона">
+                            <TextBox Width="150" Name="PhoneNumberSearch"/>
+                        </MenuItem>-->
+                    </MenuItem>
+                </Menu>
             </Grid>
         </Grid>
     </Grid>

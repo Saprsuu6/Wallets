@@ -64,6 +64,7 @@ namespace Wallet.Classes
                 {
                     Wallets.Remove(wallet);
                     Wallets.Sort();
+                    return;
                 }
             }
 

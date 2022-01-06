@@ -12,6 +12,7 @@ namespace Wallet.Classes
         private static Regex name = new Regex(@"^\S[^\/:*?""<>|]*$");
         private static Regex suraname = new Regex(@"^\S[^\/:*?""<>|]*$");
         private static Regex number = new Regex(@"^\s*\+?3?8?(0\d{2}\d{3}\d{2}\d{2})\s*$");
+        private static Regex cardNumber = new Regex(@"^\s*\d+\s*$");
 
         public static bool CheckName(string name)
         {
@@ -28,8 +29,9 @@ namespace Wallet.Classes
             return number.IsMatch(numeric);
         }
 
-        public static Regex HasName { get => name; }
-        public static Regex HasNumericWithDotWithoutMass { get => suraname; }
-        public static Regex NumericWithoutDot { get => number; }
+        public static bool CheckCardNumber(string numeric)
+        {
+            return cardNumber.IsMatch(numeric);
+        }
     }
 }

@@ -28,6 +28,8 @@ namespace Wallet.Classes
             mainWindow.ownerChange += new EventHandler<EventArgs>(OwnerChange);
             mainWindow.addCard += new EventHandler<EventArgs>(AddCard);
             mainWindow.removeCard += new EventHandler<EventArgs>(RemoveCard);
+            mainWindow.searchCard += new EventHandler<EventArgs>(SearchCard);
+            mainWindow.updateAllCards += new EventHandler<EventArgs>(UpadateAllCards);
         }
 
         #region OwnerChange
@@ -63,25 +65,100 @@ namespace Wallet.Classes
         #region AddCard
         private void AddCard(object? sender, EventArgs e)
         {
-            if (mainWindow.Name.Text == "" &&
-                mainWindow.Surename.Text == "" &&
-                mainWindow.PhoneNumber.Text == "")
+            if (mainWindow?.Name.Text == "" &&
+                mainWindow?.Surename.Text == "" &&
+                mainWindow?.PhoneNumber.Text == "")
                 throw new ApplicationException("Добавьте владельца.");
 
-            string currency = mainWindow.Currency.Text;
+            string? currency = mainWindow?.Currency.Text;
             Wallet wallet = new Wallet(person, currency);
-            wallets.AddWallet(wallet);
+            wallets?.AddWallet(wallet);
 
-            FillList(wallet);
+            UpadateList();
+        }
+        #endregion
+
+        #region RemoveCard
+        private void RemoveCard(object? sender, EventArgs e)
+        {
+            ListBoxItem? listBoxItem = mainWindow?.Cards.SelectedItem as ListBoxItem;
+            UniformGrid? uniformGrid = listBoxItem?.Content as UniformGrid;
+            TextBlock? textBlock = uniformGrid?.Children[0] as TextBlock;
+
+            string str = textBlock.Text.Substring(13);
+            ulong number = ulong.Parse(str);
+            wallets?.RemoveWallet(number);
+
+            UpadateList();
+        }
+        #endregion
+
+        #region SearchCard
+        private void SearchCard(object? sender, EventArgs e)
+        {
+            try
+            {
+                ulong number = ulong.Parse(mainWindow.CardNumberSearch.Text);
+               
+                List<Wallet> list = new List<Wallet>();
+
+                foreach (Wallet card in wallets)
+                {
+                    if(card.CardNumber.ToString().Contains(mainWindow.CardNumberSearch.Text))
+                        list.Add(card);
+                }
+
+                if (list.Count == 0)
+                    throw new Exception();
+
+                mainWindow.Cards.Items.Clear();
+                mainWindow.NotExists.Visibility = Visibility.Hidden;
+
+                foreach (Wallet card in list)
+                    Update(card);
+            }
+            catch (Exception)
+            {
+                throw new Exception();
+            }
+        }
+        #endregion
+
+        private void UpadateAllCards(object? sender, EventArgs e)
+        {
+            UpadateList();
+            mainWindow.NotExists.Visibility = Visibility.Hidden;
         }
 
-        private void FillList(Wallet wallet)
+        private void UpadateList()
+        {
+            mainWindow?.Cards.Items.Clear();
+
+            if (wallets?.Wallets.Count > 0)
+            {
+                mainWindow.EmptyList.Visibility = Visibility.Hidden;
+                mainWindow.Search.IsEnabled = true;
+            }
+            else
+            {
+                mainWindow.EmptyList.Visibility = Visibility.Visible;
+                mainWindow.Search.IsEnabled = false;
+            }
+
+
+            foreach (Wallet wallet in wallets)
+            {
+                Update(wallet);
+            }
+        }
+
+        private void Update(Wallet wallet)
         {
             TextBlock number = new TextBlock();
             number.Text = "Номер карты: " + wallet.CardNumber.ToString();
             number.FontSize = 12;
             TextBlock money = new TextBlock();
-            money.Text = "Сумма: " + wallet.Money.ToString();
+            money.Text = "Сумма: " + wallet.Money.ToString() + " " + wallet.Currency;
             money.FontSize = 12;
 
             UniformGrid uniformGrid = new UniformGrid();
@@ -94,15 +171,7 @@ namespace Wallet.Classes
             listBoxItem.Background = brush;
             listBoxItem.Content = uniformGrid;
 
-            mainWindow.Cards.Items.Add(listBoxItem); 
+            mainWindow?.Cards.Items.Add(listBoxItem);
         }
-        #endregion
-
-        #region RemoveCard
-        private void RemoveCard(object? sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-        #endregion
     }
 }
