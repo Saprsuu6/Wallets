@@ -49,3 +49,5 @@ C:\Users\coffe\Desktop\Wallets\Wallet\Wallet\obj\Debug\net5.0-windows\PersonInfo
 C:\Users\coffe\Desktop\Wallets\Wallet\Wallet\obj\Debug\net5.0-windows\PersonInfo.baml
 C:\Users\coffe\Desktop\Wallets\Wallet\Wallet\obj\Debug\net5.0-windows\AddMoney.g.cs
 C:\Users\coffe\Desktop\Wallets\Wallet\Wallet\obj\Debug\net5.0-windows\AddMoney.baml
+C:\Users\coffe\Desktop\Wallets\Wallet\Wallet\obj\Debug\net5.0-windows\TransferMoney.g.cs
+C:\Users\coffe\Desktop\Wallets\Wallet\Wallet\obj\Debug\net5.0-windows\TransferMoney.baml

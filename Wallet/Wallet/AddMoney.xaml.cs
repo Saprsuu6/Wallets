@@ -48,11 +48,9 @@ namespace Wallet
 
         private void Money_TextChanged(object sender, TextChangedEventArgs e)
         {
-            TextBox? textBox = sender as TextBox;
-
             Money.Text = Money.Text.Trim();
 
-            if (Regular.CheckMoney(textBox.Text))
+            if (Regular.CheckMoney(Money.Text))
                 Add.IsEnabled = true;
             else
                 Add.IsEnabled = false;

@@ -40,7 +40,6 @@
             </ComboBox>
         </Grid>
 
-
         <UniformGrid Columns="2">
             <Button Content="Отмена" Click="Button_Click"/>
             <Button IsEnabled="False" Content="Добавить" Name="Add" Click="Add_Click"/>

@@ -39,6 +39,7 @@ namespace Wallet.Classes
             mainWindow.searchCard += new EventHandler<EventArgs>(SearchCard);
             mainWindow.updateAllCards += new EventHandler<EventArgs>(UpadateAllCards);
             mainWindow.addSum += new EventHandler<EventArgs>(AddMoneyToCard);
+            mainWindow.trunsferMoney += new EventHandler<EventArgs>(TransferMoneyToCard);
         }
 
         public void Dispose()
@@ -176,15 +177,15 @@ namespace Wallet.Classes
             if (wallet.Currency != "UAH" && addMoney.Currency.Text != "UAH")
             {
                 string currency1 = addMoney.Currency.Text + "_UAH";
-                Convert(wallet, addMoney, ref money, currency1);
+                Convert(ref money, currency1);
 
                 string currency2 = "UAH_" + wallet.Currency;
-                Convert(wallet, addMoney, ref money, currency2);
+                Convert(ref money, currency2);
             }
             else if (wallet.Currency != "UAH" || addMoney.Currency.Text != "UAH")
             {
                 string currency = addMoney.Currency.Text + "_" + wallet.Currency;
-                Convert(wallet, addMoney, ref money, currency);
+                Convert(ref money, currency);
             }
 
             money = Math.Round(money, 2);
@@ -192,8 +193,7 @@ namespace Wallet.Classes
             UpadateList();
         }
 
-        private void Convert(Wallet wallet, AddMoney addMoney, 
-            ref double money, string currency)
+        private void Convert(ref double money, string currency)
         {
             foreach (Converter converter in wallets.Converters)
             {
@@ -203,6 +203,77 @@ namespace Wallet.Classes
                     break;
                 }
             }
+        }
+        #endregion
+
+        #region TransferMoney
+        private void TransferMoneyToCard(object? sender, EventArgs e)
+        {
+            if (wallets?.Wallets.Count <= 1)
+                throw new ApplicationException("У вас всего лишь одна карта.");
+
+            if (wallets?.Wallets[mainWindow.Cards.SelectedIndex].Money <= 0)
+                throw new ApplicationException("На этой карточке нет денег.");
+
+            TransferMoney? transfer = sender as TransferMoney;
+
+            transfer.Number.Text = "Номер карточки";
+            transfer.Money.Text = "Сумма перевода" + " (" +
+                wallets?.Wallets[mainWindow.Cards.SelectedIndex].Currency + ")";
+
+            transfer.transferMoney += new EventHandler<EventArgs>(Transfer);
+        }
+
+        private void Transfer(object? sender, EventArgs e)
+        {
+            TransferMoney? transfer = sender as TransferMoney;
+
+            Wallet? walletDestination = null;
+            try
+            {
+                ulong number = ulong.Parse(transfer.Number.Text);
+                foreach (Wallet wallet in wallets)
+                {
+                    if (wallet.CardNumber == number)
+                    {
+                        walletDestination = wallet;
+                        break;
+                    }
+                }
+
+                if (walletDestination == null)
+                    throw new ApplicationException("Карты с таким номером не существует.");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            
+            Wallet walletSender = wallets.Wallets[mainWindow.Cards.SelectedIndex];
+            double money = double.Parse(transfer.Money.Text);
+
+            if (money > walletSender.Money)
+                throw new ApplicationException("Сумма запроса превышает сумму денег на карточке.");
+
+            walletSender.GetMoney(money);
+
+            if (walletSender.Currency != "UAH" && walletDestination.Currency != "UAH")
+            {
+                string currency1 = walletSender.Currency + "_UAH";
+                Convert(ref money, currency1);
+
+                string currency2 = "UAH_" + walletDestination.Currency;
+                Convert(ref money, currency2);
+            }
+            else if (walletSender.Currency != "UAH" || walletDestination.Currency!= "UAH")
+            {
+                string currency = walletSender.Currency + "_" + walletDestination.Currency;
+                Convert(ref money, currency);
+            }
+
+            money = Math.Round(money, 2);
+            walletDestination.AddMoney(money);
+            UpadateList();
         }
         #endregion
 
@@ -251,7 +322,7 @@ namespace Wallet.Classes
             Button transferMoney = new Button();
             transferMoney.Content = "Перевести деньги";
             transferMoney.Margin = new Thickness(10, 1, 0, 1);
-            //transferMoney.Click
+            transferMoney.Click += new RoutedEventHandler(mainWindow.TransferMoney_Click);
 
             UniformGrid uniformGrid3 = new UniformGrid();
             uniformGrid3.Rows = 2;
