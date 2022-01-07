@@ -24,7 +24,9 @@ namespace Wallet
     public partial class MainWindow : Window
     {
         private Presenter? presenter = null;
-
+        
+        private bool reason;
+        private bool money;
         public MainWindow()
         {
             InitializeComponent();
@@ -172,6 +174,62 @@ namespace Wallet
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             presenter?.Dispose();
+        }
+
+        private void Reason_GotFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox? textBox = sender as TextBox;
+
+            if (textBox.Foreground == Brushes.Gray)
+            {
+                textBox.Text = "";
+                textBox.Foreground = Brushes.Black;
+            }
+        }
+
+        private void Reason_LostFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox? textBox = sender as TextBox;
+
+            if (textBox.Text == "")
+            {
+                textBox.Foreground = Brushes.Gray;
+
+                if (textBox.Name == "Reason")
+                    textBox.Text = "Куда вы хотите потратить деньги";
+                else if (textBox.Name == "Money")
+                    textBox.Text = "Введите сумму";
+            }
+        }
+
+        private void Reason_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (Reason.Text.Length > 0)
+                reason = true;
+            else 
+                reason = false;
+
+            Pay();
+        }
+
+        private void Money_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Money.Text = Money.Text.Trim();
+
+            if (Regular.CheckMoney(Money.Text))
+                money = true;
+            else
+                money = false;
+
+            Pay();
+        }
+
+        private void Pay()
+        {
+            //if (reason && money)
+            //    PayForReason.IsEnabled = true;
+            //else
+            //    PayForReason.IsEnabled = false;
         }
     }
 }

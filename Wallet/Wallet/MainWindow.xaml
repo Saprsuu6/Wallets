@@ -15,9 +15,16 @@
 
         <Style TargetType="Button">
             <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Margin" Value="5"/>
         </Style>
 
         <Style TargetType="ListBox">
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="BorderThickness" Value="0"/>
         </Style>
 
@@ -81,7 +88,7 @@
                     <ColumnDefinition Width="80"/>
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0" Content="Добавить карту" Margin="5" Click="Button_Click_1"/>
+                <Button Grid.Column="0" Content="Добавить карту" Click="Button_Click_1"/>
                 <Button IsEnabled="False" Name="Remove" Grid.Column="1" Content="Удалить карту" Margin="5" Click="Remove_Click"/>
 
                 <ComboBox Name="Currency" SelectedIndex="0" Grid.Column="2" Margin="5" BorderThickness="0">
@@ -104,13 +111,25 @@
                         <MenuItem Header="По номеру карточки">
                             <TextBox Width="150" Name="CardNumberSearch" TextChanged="CardNumberSearch_TextChanged"/>
                         </MenuItem>
-
-                        <!--<MenuItem Header="По номеру телефона">
-                            <TextBox Width="150" Name="PhoneNumberSearch"/>
-                        </MenuItem>-->
                     </MenuItem>
                 </Menu>
             </Grid>
         </Grid>
+
+        <UniformGrid Grid.Row="3" Rows="2" Background="#A1C3C2" Margin="5">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="220"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <TextBox Text="Куда вы хотите потратить деньги." Foreground="Gray"
+                         Grid.Column="0" Name="Reason" GotFocus="Reason_GotFocus" LostFocus="Reason_LostFocus" TextChanged="Reason_TextChanged"/>
+                <TextBox Grid.Column="1" Name="Money" TextChanged="Money_TextChanged"
+                         Text="Введите сумму" Foreground="Gray" GotFocus="Reason_GotFocus" LostFocus="Reason_LostFocus"/>
+                <!--<Button IsEnabled="False" Name="PayForReason" Grid.Column="3" Content="Оплатить"/>-->
+            </Grid>
+        </UniformGrid>
     </Grid>
 </Window>
