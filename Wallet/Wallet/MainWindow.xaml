@@ -5,9 +5,9 @@
          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
          xmlns:local="clr-namespace:Wallet.Classes"
          mc:Ignorable="d"
-         Title="MainWindow" Height="400" Width="450"
+         Title="MainWindow" Height="420" Width="450"
          WindowStartupLocation="CenterScreen" Loaded="Window_Loaded"
-         MaxHeight="400" MaxWidth="450" MinHeight="400" MinWidth="450" Closing="Window_Closing">
+         MaxHeight="420" MaxWidth="450" MinHeight="420" MinWidth="450" Closing="Window_Closing">
     <Window.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="FontSize" Value="15"/>
@@ -24,7 +24,7 @@
 
         <Style TargetType="TextBox">
             <Setter Property="Margin" Value="5"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="BorderThickness" Value="0"/>
         </Style>
 
@@ -124,12 +124,17 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
+                <Button Grid.Column="2" Name="Pay" Content="Оплатить" IsEnabled="False" Click="Pay_Click"/>
                 <TextBox Text="Куда вы хотите потратить деньги." Foreground="Gray"
                          Grid.Column="0" Name="Reason" GotFocus="Reason_GotFocus" LostFocus="Reason_LostFocus" TextChanged="Reason_TextChanged"/>
                 <TextBox Grid.Column="1" Name="Money" TextChanged="Money_TextChanged"
                          Text="Введите сумму" Foreground="Gray" GotFocus="Reason_GotFocus" LostFocus="Reason_LostFocus"/>
-                <!--<Button IsEnabled="False" Name="PayForReason" Grid.Column="3" Content="Оплатить"/>-->
             </Grid>
+
+            <UniformGrid Columns="2">
+                <Button Content="История затрат"/>
+                <Button Content="Статистика затрат за период"/>
+            </UniformGrid>
         </UniformGrid>
     </Grid>
 </Window>

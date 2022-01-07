@@ -40,6 +40,7 @@ namespace Wallet
         public event EventHandler<EventArgs>? updateAllCards = null;
         public event EventHandler<EventArgs>? addSum = null;
         public event EventHandler<EventArgs>? trunsferMoney = null;
+        public event EventHandler<EventArgs>? pay = null;
 
         private void SelectCard(Button? button)
         {
@@ -209,7 +210,7 @@ namespace Wallet
             else 
                 reason = false;
 
-            Pay();
+            EnableDisabePay();
         }
 
         private void Money_TextChanged(object sender, TextChangedEventArgs e)
@@ -221,15 +222,34 @@ namespace Wallet
             else
                 money = false;
 
-            Pay();
+            EnableDisabePay();
         }
 
-        private void Pay()
+        private void EnableDisabePay()
         {
-            //if (reason && money)
-            //    PayForReason.IsEnabled = true;
-            //else
-            //    PayForReason.IsEnabled = false;
+            if (reason && money)
+                Pay.IsEnabled = true;
+            else
+                Pay.IsEnabled = false;
+        }
+
+        private void Pay_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Хотите ли вы продолжить оплату?", "",
+                MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    pay?.Invoke(this, EventArgs.Empty);
+                    MessageBox.Show("Оплата прошла успешно.", "", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
     }
 }

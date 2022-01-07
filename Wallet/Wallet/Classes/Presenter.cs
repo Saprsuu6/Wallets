@@ -16,6 +16,7 @@ namespace Wallet.Classes
         private Person? person = null;
         private readonly MainWindow? mainWindow = null;
         private WalletsBase? wallets = null;
+        private ConsumptionBase? consumptions = null;
 
         public Presenter(MainWindow mainWindow)
         {
@@ -26,6 +27,8 @@ namespace Wallet.Classes
 
             wallets = new WalletsBase(SaveLoad.LoadWallets());
             UpadateList();
+
+            consumptions = new ConsumptionBase(SaveLoad.LoadConsumptions());
 
             if (wallets.Wallets.Count > 0)
             {
@@ -40,12 +43,14 @@ namespace Wallet.Classes
             mainWindow.updateAllCards += new EventHandler<EventArgs>(UpadateAllCards);
             mainWindow.addSum += new EventHandler<EventArgs>(AddMoneyToCard);
             mainWindow.trunsferMoney += new EventHandler<EventArgs>(TransferMoneyToCard);
+            mainWindow.pay += new EventHandler<EventArgs>(Pay);
         }
 
         public void Dispose()
         {
             SaveLoad.SavePerson(person);
             SaveLoad.SaveWallets(wallets.Wallets);
+            SaveLoad.SaveConsumptions(consumptions.Consumptions);
         }
 
         #region OwnerChange
@@ -274,6 +279,32 @@ namespace Wallet.Classes
             money = Math.Round(money, 2);
             walletDestination.AddMoney(money);
             UpadateList();
+        }
+        #endregion
+
+        #region Pay
+        private void Pay(object? sender, EventArgs e)
+        {
+            if (mainWindow.Cards.SelectedIndex == -1)
+                throw new ApplicationException("Выберите карточку.");
+
+            Wallet wallet = wallets.Wallets[mainWindow.Cards.SelectedIndex];
+            double money = double.Parse(mainWindow.Money.Text);
+
+            if (money > wallet.Money)
+                throw new ApplicationException("Недостаточно денег на счету.");
+
+            wallet.GetMoney(money);
+            CreateConsumption(mainWindow.Reason.Text.Trim(),
+                money, wallet.Currency);
+
+            UpadateList();
+        }
+
+        private void CreateConsumption(string reason, double money, string currency)
+        {
+            Consumption consumption = new Consumption(reason, money, currency, DateTime.UtcNow);
+            consumptions.AddConsumption(consumption);
         }
         #endregion
 

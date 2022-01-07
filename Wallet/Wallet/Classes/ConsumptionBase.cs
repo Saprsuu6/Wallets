@@ -10,7 +10,7 @@ namespace Wallet.Classes
     [Serializable]
     internal class ConsumptionBase : IEnumerable, IEnumerator, IDisposable
     {
-        private List<Consumption> Consumptions { get; }
+        public List<Consumption> Consumptions { get; }
 
         private int position = -1;
 
@@ -25,9 +25,9 @@ namespace Wallet.Classes
             }
         }
 
-        public ConsumptionBase()
+        public ConsumptionBase(List<Consumption> consumptions)
         {
-            Consumptions = new List<Consumption>();
+            Consumptions = consumptions;
         }
 
         public void Dispose()
