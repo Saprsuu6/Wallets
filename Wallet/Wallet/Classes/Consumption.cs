@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,5 +27,27 @@ namespace Wallet.Classes
         public double Money => money;
         public string Currency => currency;
         public DateTime Date => date;
+
+        public class Ascending : IComparer<Consumption>
+        {
+            public int Compare(Consumption? x, Consumption? y)
+            {
+                if (x is null || y is null)
+                    throw new ArgumentException("Некорректное значение параметра");
+
+                return x.Date.CompareTo(y.Date);
+            }
+        }
+
+        public class Descending : IComparer<Consumption>
+        {
+            public int Compare(Consumption? x, Consumption? y)
+            {
+                if (x is null || y is null)
+                    throw new ArgumentException("Некорректное значение параметра");
+
+                return y.Date.CompareTo(x.Date);
+            }
+        }
     }
 }

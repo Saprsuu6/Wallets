@@ -35,9 +35,15 @@ namespace Wallet.Classes
             SaveLoad.SaveConsumptions(Consumptions);
         }
 
+        public List<Consumption> Clone()
+        {
+            return new List<Consumption>(Consumptions);
+        }
+
         public void AddConsumption(Consumption consumption)
         {
             Consumptions.Add(consumption);
+            Consumptions.Sort(new Consumption.Descending());
         }
 
         public IEnumerator GetEnumerator()

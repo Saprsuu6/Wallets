@@ -26,7 +26,7 @@ namespace Wallet.Classes
             UpadateOwner();
 
             wallets = new WalletsBase(SaveLoad.LoadWallets());
-            UpadateList();
+            UpadateListCards();
 
             consumptions = new ConsumptionBase(SaveLoad.LoadConsumptions());
 
@@ -44,6 +44,7 @@ namespace Wallet.Classes
             mainWindow.addSum += new EventHandler<EventArgs>(AddMoneyToCard);
             mainWindow.trunsferMoney += new EventHandler<EventArgs>(TransferMoneyToCard);
             mainWindow.pay += new EventHandler<EventArgs>(Pay);
+            mainWindow.consimptionsList += new EventHandler<EventArgs>(UpdateConsumptionsList);
         }
 
         public void Dispose()
@@ -102,7 +103,7 @@ namespace Wallet.Classes
             Wallet wallet = new Wallet(person, currency);
             wallets?.AddWallet(wallet);
 
-            UpadateList();
+            UpadateListCards();
         }
         #endregion
 
@@ -118,7 +119,7 @@ namespace Wallet.Classes
             ulong number = ulong.Parse(str);
             wallets?.RemoveWallet(number);
 
-            UpadateList();
+            UpadateListCards();
         }
         #endregion
 
@@ -144,7 +145,7 @@ namespace Wallet.Classes
                 mainWindow.NotExists.Visibility = Visibility.Hidden;
 
                 foreach (Wallet card in list)
-                    Update(card);
+                    UpdateCards(card);
             }
             catch (Exception)
             {
@@ -195,7 +196,7 @@ namespace Wallet.Classes
 
             money = Math.Round(money, 2);
             wallet.AddMoney(money);
-            UpadateList();
+            UpadateListCards();
         }
 
         private void Convert(ref double money, string currency)
@@ -278,7 +279,7 @@ namespace Wallet.Classes
 
             money = Math.Round(money, 2);
             walletDestination.AddMoney(money);
-            UpadateList();
+            UpadateListCards();
         }
         #endregion
 
@@ -298,7 +299,7 @@ namespace Wallet.Classes
             CreateConsumption(mainWindow.Reason.Text.Trim(),
                 money, wallet.Currency);
 
-            UpadateList();
+            UpadateListCards();
         }
 
         private void CreateConsumption(string reason, double money, string currency)
@@ -308,14 +309,14 @@ namespace Wallet.Classes
         }
         #endregion
 
-        #region Updatings
+        #region UpdatingsCards
         private void UpadateAllCards(object? sender, EventArgs e)
         {
-            UpadateList();
+            UpadateListCards();
             mainWindow.NotExists.Visibility = Visibility.Hidden;
         }
 
-        private void UpadateList()
+        private void UpadateListCards()
         {
             mainWindow?.Cards.Items.Clear();
 
@@ -333,11 +334,11 @@ namespace Wallet.Classes
 
             foreach (Wallet wallet in wallets)
             {
-                Update(wallet);
+                UpdateCards(wallet);
             }
         }
 
-        private void Update(Wallet wallet)
+        private void UpdateCards(Wallet wallet)
         {
             TextBlock number = new TextBlock();
             number.Text = "Номер карты: " + wallet.CardNumber.ToString();
@@ -377,6 +378,83 @@ namespace Wallet.Classes
 
             mainWindow?.Cards.Items.Add(listBoxItem);
         }
-        #endregion  
+        #endregion
+
+        #region UpdationConsumptions
+        private void UpdateConsumptionsList(object? sender, EventArgs e)
+        {
+            Consumptions? consumptionsWindow = sender as Consumptions;
+
+            consumptionsWindow.ascending += new EventHandler<EventArgs>(Ascending);
+            consumptionsWindow.descending += new EventHandler<EventArgs>(Descending);
+
+            if (consumptions?.Consumptions.Count == 0)
+            {
+                consumptionsWindow.EmptyList.Visibility = Visibility.Visible;
+                consumptionsWindow.Ascending.IsEnabled = false;
+                consumptionsWindow.Descending.IsEnabled = false;
+                consumptionsWindow.Search.IsEnabled = false;
+                return;
+            }
+            else if (consumptions?.Consumptions.Count > 0)
+            {
+                consumptionsWindow.EmptyList.Visibility = Visibility.Hidden;
+                consumptionsWindow.Ascending.IsEnabled = true;
+                consumptionsWindow.Descending.IsEnabled = true;
+                consumptionsWindow.Descending.IsChecked = true;
+                consumptionsWindow.Search.IsEnabled = true;
+            }
+        }
+
+        private void Descending(object? sender, EventArgs e)
+        {
+            Consumptions? consumptionsWindow = sender as Consumptions;
+
+            if (consumptionsWindow.ConsumptionsList.Items.Count > 0)
+                consumptionsWindow?.ConsumptionsList.Items.Clear();
+
+            foreach (Consumption consumption in consumptions)
+            {
+                UpdateConsumptions(consumption, consumptionsWindow);
+            }
+        }
+
+        private void Ascending(object? sender, EventArgs e)
+        {
+            Consumptions? consumptionsWindow = sender as Consumptions;
+
+            consumptionsWindow?.ConsumptionsList.Items.Clear();
+            List<Consumption> sortConsumptions = consumptions.Clone();
+            sortConsumptions.Sort(new Consumption.Ascending());
+
+            foreach (Consumption consumption in sortConsumptions)
+            {
+                UpdateConsumptions(consumption, consumptionsWindow);
+            }
+        }
+
+        private void UpdateConsumptions(Consumption consumption, Consumptions? consumptionsWindow)
+        {
+            TextBlock reason = new TextBlock();
+            reason.Text = consumption.Reason;
+            TextBlock money = new TextBlock();
+            money.Text = "Сумма: " + consumption.Money.ToString() + " " + consumption.Currency;
+            TextBlock date = new TextBlock();
+            date.Text = consumption.Date.ToString();
+
+            UniformGrid uniformGrid = new UniformGrid();
+            uniformGrid.Rows = 3;
+            uniformGrid.Children.Add(reason);
+            uniformGrid.Children.Add(money);
+            uniformGrid.Children.Add(date);
+
+            ListBoxItem listBoxItem = new ListBoxItem();
+            Brush brush = new SolidColorBrush(Color.FromRgb(210, 186, 236));
+            listBoxItem.Background = brush;
+            listBoxItem.Content = uniformGrid;
+
+            consumptionsWindow?.ConsumptionsList.Items.Add(listBoxItem);
+        }
+        #endregion
     }
 }

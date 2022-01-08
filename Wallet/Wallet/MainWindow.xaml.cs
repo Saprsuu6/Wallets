@@ -41,6 +41,7 @@ namespace Wallet
         public event EventHandler<EventArgs>? addSum = null;
         public event EventHandler<EventArgs>? trunsferMoney = null;
         public event EventHandler<EventArgs>? pay = null;
+        public event EventHandler<EventArgs>? consimptionsList = null;
 
         private void SelectCard(Button? button)
         {
@@ -149,6 +150,18 @@ namespace Wallet
             }
         }
 
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            Effect = new BlurEffect();
+
+            Consumptions consumptions = new Consumptions();
+            consimptionsList?.Invoke(consumptions, new EventArgs());
+            consumptions.Owner = this;
+            consumptions.ShowDialog();
+
+            Effect = null;
+        }
+
         private void CardNumberSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
             CardNumberSearch.Text = CardNumberSearch.Text.Trim();
@@ -244,6 +257,9 @@ namespace Wallet
                 {
                     pay?.Invoke(this, EventArgs.Empty);
                     MessageBox.Show("Оплата прошла успешно.", "", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    Reason.Text = "";
+                    Money.Text = "";
                 }
                 catch (Exception ex)
                 {

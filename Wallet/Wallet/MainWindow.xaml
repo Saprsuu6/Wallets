@@ -27,11 +27,6 @@
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="BorderThickness" Value="0"/>
         </Style>
-
-        <Style TargetType="RadioButton">
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-        </Style>
     </Window.Resources>
 
     <Grid Background="#53BAB7">
@@ -132,8 +127,8 @@
             </Grid>
 
             <UniformGrid Columns="2">
-                <Button Content="История затрат"/>
-                <Button Content="Статистика затрат за период"/>
+                <Button Content="История затрат" Click="Button_Click_2"/>
+                <Button Content="Статистика затрат"/>
             </UniformGrid>
         </UniformGrid>
     </Grid>
