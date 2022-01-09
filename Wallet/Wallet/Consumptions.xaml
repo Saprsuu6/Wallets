@@ -46,6 +46,8 @@
                 <ListBox Grid.Row="0" Name="ConsumptionsList" Background="#9784B6" Margin="10"/>
                 <TextBlock Name="EmptyList" Grid.Row="0" Text="У вас небыло затрат." 
                        VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <TextBlock Visibility="Hidden" Name="NotFound" Grid.Row="0" Text="Затраты не найдены." 
+                       VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
                 <Grid Grid.Row="1" Margin="5">
                     <Grid.ColumnDefinitions>
@@ -70,15 +72,15 @@
                             </MenuItem.Header>
 
                             <MenuItem Header="По названию чека">
-                                <TextBox Width="150" Name="ReasonSearch"/>
+                                <TextBox Width="150" Name="ReasonSearch" TextChanged="ReasonSearch_TextChanged"/>
                             </MenuItem>
                             
                             <MenuItem Header="По сумме чека">
-                                <TextBox Width="150" Name="MoneySearch"/>
+                                <TextBox Width="150" Name="MoneySearch" TextChanged="MoneySearch_TextChanged"/>
                             </MenuItem>
 
                             <MenuItem Header="По валюте">
-                                <ComboBox Width="150" Name="CurrencySearch" SelectedIndex="0">
+                                <ComboBox Width="150" Name="CurrencySearch" SelectedIndex="0" SelectionChanged="CurrencySearch_SelectionChanged">
                                     <ComboBoxItem Content="All curreny"/>
                                     <ComboBoxItem Content="UAH"/>
                                     <ComboBoxItem Content="USD"/>
@@ -89,12 +91,12 @@
                             </MenuItem>
 
                             <MenuItem Header="По дате">
-                                <DatePicker Name="DateSearch"/>
+                                <DatePicker Name="DateSearch" SelectedDateChanged="DateSearch_SelectedDateChanged"/>
                             </MenuItem>
 
                             <MenuItem Header="По дате (промежуток)">
-                                <DatePicker Name="DateStart"/>
-                                <DatePicker Name="DateEnd"/>
+                                <DatePicker Name="DateStart" SelectedDateChanged="DateStart_SelectedDateChanged"/>
+                                <DatePicker Name="DateEnd" SelectedDateChanged="DateStart_SelectedDateChanged"/>
                             </MenuItem>
                         </MenuItem>
                     </Menu>

@@ -126,31 +126,24 @@ namespace Wallet.Classes
         #region SearchCard
         private void SearchCard(object? sender, EventArgs e)
         {
-            try
+            ulong number = ulong.Parse(mainWindow.CardNumberSearch.Text);
+
+            List<Wallet> list = new List<Wallet>();
+
+            foreach (Wallet card in wallets)
             {
-                ulong number = ulong.Parse(mainWindow.CardNumberSearch.Text);
-               
-                List<Wallet> list = new List<Wallet>();
-
-                foreach (Wallet card in wallets)
-                {
-                    if(card.CardNumber.ToString().Contains(mainWindow.CardNumberSearch.Text))
-                        list.Add(card);
-                }
-
-                if (list.Count == 0)
-                    throw new Exception();
-
-                mainWindow.Cards.Items.Clear();
-                mainWindow.NotExists.Visibility = Visibility.Hidden;
-
-                foreach (Wallet card in list)
-                    UpdateCards(card);
+                if (card.CardNumber.ToString().Contains(mainWindow.CardNumberSearch.Text))
+                    list.Add(card);
             }
-            catch (Exception)
-            {
+
+            if (list.Count == 0)
                 throw new Exception();
-            }
+
+            mainWindow.Cards.Items.Clear();
+            mainWindow.NotExists.Visibility = Visibility.Hidden;
+
+            foreach (Wallet card in list)
+                UpdateCards(card);
         }
         #endregion
 
@@ -387,6 +380,12 @@ namespace Wallet.Classes
 
             consumptionsWindow.ascending += new EventHandler<EventArgs>(Ascending);
             consumptionsWindow.descending += new EventHandler<EventArgs>(Descending);
+            consumptionsWindow.reasonSerach += new EventHandler<EventArgs>(ReasonSearch);
+            consumptionsWindow.moneySerach += new EventHandler<EventArgs>(MoneySearch);
+            consumptionsWindow.currencySerach += new EventHandler<EventArgs>(CurrencySearch);
+            consumptionsWindow.dateSearch += new EventHandler<EventArgs>(DateSearch);
+            consumptionsWindow.gapDateSearch += new EventHandler<EventArgs>(GapDateSearch);
+            consumptionsWindow.apdateAllChecks += new EventHandler<EventArgs>(ApdateAllChecks);
 
             if (consumptions?.Consumptions.Count == 0)
             {
@@ -403,6 +402,115 @@ namespace Wallet.Classes
                 consumptionsWindow.Descending.IsEnabled = true;
                 consumptionsWindow.Descending.IsChecked = true;
                 consumptionsWindow.Search.IsEnabled = true;
+            }
+        }
+
+        private void ApdateAllChecks(object? sender, EventArgs e)
+        {
+            Consumptions? consumptionsWindow = sender as Consumptions;
+
+            Descending(consumptionsWindow, new EventArgs());
+            consumptionsWindow.NotFound.Visibility = Visibility.Hidden;
+        }
+
+        private void ReasonSearch(object? sender, EventArgs e)
+        {
+            Consumptions? consumptionsWindow = sender as Consumptions;
+
+            string reason = consumptionsWindow.ReasonSearch.Text;
+
+            List<Consumption> consumptions = new List<Consumption>();
+            foreach (Consumption consumption in this.consumptions)
+            {
+                if (consumption.Reason.Contains(reason))
+                    consumptions.Add(consumption);
+            }
+
+            UpadeteNotFound(consumptions, consumptionsWindow);
+        }
+
+        private void MoneySearch(object? sender, EventArgs e)
+        {
+            Consumptions? consumptionsWindow = sender as Consumptions;
+
+            double money = double.Parse(consumptionsWindow.MoneySearch.Text);
+
+            List<Consumption> consumptions = new List<Consumption>();
+            foreach (Consumption consumption in this.consumptions)
+            {
+                if (consumption.Money == money)
+                    consumptions.Add(consumption);
+            }
+
+            UpadeteNotFound(consumptions, consumptionsWindow);
+        }
+
+        private void CurrencySearch(object? sender, EventArgs e)
+        {
+            Consumptions? consumptionsWindow = sender as Consumptions;
+
+            string currency = consumptionsWindow.CurrencySearch.SelectedValue.ToString();
+            int index = currency.IndexOf(':');
+            currency = currency.Substring(index + 2);
+
+            List<Consumption> consumptions = new List<Consumption>();
+            foreach (Consumption consumption in this.consumptions)
+            {
+                if (consumption.Currency == currency)
+                    consumptions.Add(consumption);
+            }
+
+            UpadeteNotFound(consumptions, consumptionsWindow);
+        }
+
+        private void DateSearch(object? sender, EventArgs e)
+        {
+            Consumptions? consumptionsWindow = sender as Consumptions;
+
+            DateTime? date = consumptionsWindow.DateSearch.SelectedDate;
+
+            List<Consumption> consumptions = new List<Consumption>();
+            foreach (Consumption consumption in this.consumptions)
+            {
+                if (consumption.Date.Year == date.Value.Year
+                    && consumption.Date.Month == date.Value.Month
+                    && consumption.Date.Day == date.Value.Day)
+                    consumptions.Add(consumption);
+            }
+
+            UpadeteNotFound(consumptions, consumptionsWindow);
+        }
+
+        private void GapDateSearch(object? sender, EventArgs e)
+        {
+            Consumptions? consumptionsWindow = sender as Consumptions;
+
+            DateTime? dateStart = consumptionsWindow.DateStart.SelectedDate;
+            DateTime? dateEnd = consumptionsWindow.DateEnd.SelectedDate;
+
+            List<Consumption> consumptions = new List<Consumption>();
+            foreach (Consumption consumption in this.consumptions)
+            {
+                if (consumption.Date.Year >= dateStart.Value.Year && consumption.Date.Year <= dateEnd.Value.Year
+                    && consumption.Date.Month >= dateStart.Value.Month && consumption.Date.Month <= dateEnd.Value.Month
+                    && consumption.Date.Day >= dateStart.Value.Day && consumption.Date.Day <= dateEnd.Value.Day)
+                    consumptions.Add(consumption);
+            }
+
+            UpadeteNotFound(consumptions, consumptionsWindow);
+        }
+
+        private void UpadeteNotFound(List<Consumption> consumptions, Consumptions? consumptionsWindow)
+        {
+            if (consumptions.Count < 1)
+                throw new ApplicationException();
+
+            consumptionsWindow.ConsumptionsList.Items.Clear();
+            consumptionsWindow.NotFound.Visibility = Visibility.Hidden;
+
+            foreach (Consumption consumption in consumptions)
+            {
+                UpdateConsumptions(consumption, consumptionsWindow);
             }
         }
 
