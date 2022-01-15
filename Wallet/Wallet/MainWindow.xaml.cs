@@ -42,6 +42,7 @@ namespace Wallet
         public event EventHandler<EventArgs>? trunsferMoney = null;
         public event EventHandler<EventArgs>? pay = null;
         public event EventHandler<EventArgs>? consimptionsList = null;
+        public event EventHandler<EventArgs>? statistic = null;
 
         private void SelectCard(Button? button)
         {
@@ -158,6 +159,18 @@ namespace Wallet
             consimptionsList?.Invoke(consumptions, new EventArgs());
             consumptions.Owner = this;
             consumptions.ShowDialog();
+
+            Effect = null;
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            Effect = new BlurEffect();
+
+            Statistic statistic = new Statistic();
+            this.statistic?.Invoke(statistic, new EventArgs());
+            statistic.Owner = this;
+            statistic.ShowDialog();
 
             Effect = null;
         }

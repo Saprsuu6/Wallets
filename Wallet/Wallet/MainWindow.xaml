@@ -128,7 +128,7 @@
 
             <UniformGrid Columns="2">
                 <Button Content="История затрат" Click="Button_Click_2"/>
-                <Button Content="Статистика затрат"/>
+                <Button Content="Статистика затрат" Click="Button_Click_3"/>
             </UniformGrid>
         </UniformGrid>
     </Grid>

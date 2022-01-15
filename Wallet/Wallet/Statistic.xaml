@@ -1,0 +1,56 @@
+﻿<Window x:Class="Wallet.Statistic"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        xmlns:local="clr-namespace:Wallet"
+        mc:Ignorable="d"
+        Title="Statistic" Height="250" Width="350"
+        WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="NoResize">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+
+        <Style TargetType="Menu">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Background="#546CBA">
+        <Grid Grid.Row="0" Background="#8497B6" Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <lvc:CartesianChart Name="Chart"
+            Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="0" Margin="10"/>
+
+            <Button Content="Нaзад" Grid.Row="1" Grid.Column="0" Click="Button_Click"/>
+            <Menu Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center">
+                <MenuItem Name="Search" Header="Выбор критерия">
+                    <MenuItem Header="Год">
+                        <TextBox Name="Year" Width="150" TextChanged="Year_TextChanged"/>
+                    </MenuItem>
+
+                    <MenuItem Header="Месяц">
+                        <TextBox Name="Month" Width="150" TextChanged="Month_TextChanged"/>
+                    </MenuItem>
+
+                    <MenuItem Header="День">
+                        <TextBox Name="Day" Width="150" TextChanged="Day_TextChanged"/>
+                    </MenuItem>
+                </MenuItem>
+            </Menu>
+        </Grid>
+    </Grid>
+</Window>

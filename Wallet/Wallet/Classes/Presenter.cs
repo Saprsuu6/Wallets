@@ -45,6 +45,7 @@ namespace Wallet.Classes
             mainWindow.trunsferMoney += new EventHandler<EventArgs>(TransferMoneyToCard);
             mainWindow.pay += new EventHandler<EventArgs>(Pay);
             mainWindow.consimptionsList += new EventHandler<EventArgs>(UpdateConsumptionsList);
+            mainWindow.statistic += new EventHandler<EventArgs>(UpdateStatistic);
         }
 
         public void Dispose()
@@ -562,6 +563,41 @@ namespace Wallet.Classes
             listBoxItem.Content = uniformGrid;
 
             consumptionsWindow?.ConsumptionsList.Items.Add(listBoxItem);
+        }
+        #endregion
+
+        #region
+        private void UpdateStatistic(object? sender, EventArgs e)
+        {
+            Statistic? statistic = sender as Statistic;
+
+            statistic.year += new EventHandler<EventArgs>(UpdateForYear);
+            statistic.year += new EventHandler<EventArgs>(UpdateForMonth);
+            statistic.year += new EventHandler<EventArgs>(UpdateForDay);
+
+            Init(statistic);
+        }
+
+        private void Init(Statistic? statistic)
+        {
+            statistic.Year.Text = DateTime.Now.Year.ToString();
+            statistic.Month.Text = DateTime.Now.Month.ToString();
+            statistic.Day.Text = DateTime.Now.Day.ToString();
+        }
+
+        private void UpdateForDay(object? sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void UpdateForMonth(object? sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void UpdateForYear(object? sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
         #endregion
     }

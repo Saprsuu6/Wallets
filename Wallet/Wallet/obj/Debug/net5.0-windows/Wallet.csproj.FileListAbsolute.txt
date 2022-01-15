@@ -55,3 +55,8 @@ C:\Users\coffe\Desktop\Wallets\Wallet\Wallet\obj\Debug\net5.0-windows\Consumptio
 C:\Users\coffe\Desktop\Wallets\Wallet\Wallet\obj\Debug\net5.0-windows\Consumptions.baml
 C:\Users\coffe\Desktop\Wallets\Wallet\Wallet\obj\Debug\net5.0-windows\Window1.g.cs
 C:\Users\coffe\Desktop\Wallets\Wallet\Wallet\obj\Debug\net5.0-windows\Window1.baml
+C:\Users\coffe\Desktop\Wallets\Wallet\Wallet\obj\Debug\net5.0-windows\Statistic.g.cs
+C:\Users\coffe\Desktop\Wallets\Wallet\Wallet\obj\Debug\net5.0-windows\Statistic.baml
+C:\Users\coffe\Desktop\Wallets\Wallet\Wallet\bin\Debug\net5.0-windows\LiveCharts.dll
+C:\Users\coffe\Desktop\Wallets\Wallet\Wallet\bin\Debug\net5.0-windows\LiveCharts.Wpf.dll
+C:\Users\coffe\Desktop\Wallets\Wallet\Wallet\obj\Debug\net5.0-windows\Wallet.csproj.CopyComplete

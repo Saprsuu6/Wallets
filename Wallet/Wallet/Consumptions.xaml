@@ -56,10 +56,10 @@
                         <ColumnDefinition Width="80"/>
                     </Grid.ColumnDefinitions>
 
-                    <RadioButton x:Name="Descending" Grid.Column="0" Content="По убыванию" 
-                                 Checked="RadioButton_Checked" 
+                    <RadioButton x:Name="Descending" Grid.Column="0" 
+                                 Content="&#9660; по дате" Checked="RadioButton_Checked" 
                                  IsEnabled="{Binding ElementName=ConsumptionsList, Path=HasItems}"/>
-                    <RadioButton x:Name="Ascending" Grid.Column="1" Content="По возрастанию"
+                    <RadioButton x:Name="Ascending" Content="&#9650; по дате" Grid.Column="1"
                                  IsEnabled="{Binding ElementName=ConsumptionsList, Path=HasItems}" Checked="RadioButton_Checked"/>
 
                     <Menu Grid.Column="2" Margin="5">
@@ -74,7 +74,7 @@
                             <MenuItem Header="По названию чека">
                                 <TextBox Width="150" Name="ReasonSearch" TextChanged="ReasonSearch_TextChanged"/>
                             </MenuItem>
-                            
+
                             <MenuItem Header="По сумме чека">
                                 <TextBox Width="150" Name="MoneySearch" TextChanged="MoneySearch_TextChanged"/>
                             </MenuItem>

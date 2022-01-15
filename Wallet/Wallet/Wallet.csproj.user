@@ -13,6 +13,9 @@
     <Compile Update="Consumptions.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Statistic.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="TransferMoney.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -25,6 +28,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Consumptions.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Statistic.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="TransferMoney.xaml">
