@@ -167,10 +167,17 @@ namespace Wallet
         {
             Effect = new BlurEffect();
 
-            Statistic statistic = new Statistic();
-            this.statistic?.Invoke(statistic, new EventArgs());
-            statistic.Owner = this;
-            statistic.ShowDialog();
+            try
+            {
+                Statistic statistic = new Statistic();
+                this.statistic?.Invoke(statistic, new EventArgs());
+                statistic.Owner = this;
+                statistic.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
 
             Effect = null;
         }

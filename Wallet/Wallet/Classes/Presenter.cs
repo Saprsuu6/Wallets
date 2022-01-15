@@ -1,4 +1,8 @@
-﻿using System;
+﻿using LiveCharts;
+using LiveCharts.Defaults;
+using LiveCharts.Definitions.Series;
+using LiveCharts.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -569,12 +573,15 @@ namespace Wallet.Classes
         #region
         private void UpdateStatistic(object? sender, EventArgs e)
         {
+            if (consumptions.Consumptions.Count < 1)
+                throw new ApplicationException("У вас нет затрат");
+
             Statistic? statistic = sender as Statistic;
 
             statistic.year += new EventHandler<EventArgs>(UpdateForYear);
-            statistic.year += new EventHandler<EventArgs>(UpdateForMonth);
-            statistic.year += new EventHandler<EventArgs>(UpdateForDay);
+            statistic.month += new EventHandler<EventArgs>(UpdateForMonth);
 
+            statistic.Chart.Series.Clear();
             Init(statistic);
         }
 
@@ -582,22 +589,183 @@ namespace Wallet.Classes
         {
             statistic.Year.Text = DateTime.Now.Year.ToString();
             statistic.Month.Text = DateTime.Now.Month.ToString();
-            statistic.Day.Text = DateTime.Now.Day.ToString();
-        }
-
-        private void UpdateForDay(object? sender, EventArgs e)
-        {
-            throw new NotImplementedException();
         }
 
         private void UpdateForMonth(object? sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            Statistic? statistic = sender as Statistic;
+            UpadateVisible(statistic);
+
+            int year = int.Parse(statistic.Year.Text);
+            int month = int.Parse(statistic.Month.Text);
+
+            List<Consumption> currentConsumptions = new List<Consumption>();
+
+            foreach (Consumption consumption in consumptions)
+            {
+                if (consumption.Date.Month == month)
+                    currentConsumptions.Add(consumption);
+            }
+
+            if (currentConsumptions.Count < 1)
+                throw new ApplicationException();
+
+            List<LineSeries> charlesSeries = new List<LineSeries>()
+            {
+                AmountPerDay(year, month, currentConsumptions),
+                SumPerDay(year, month, currentConsumptions),
+            };
+
+            GenerateStatistic(statistic, charlesSeries);
+        }
+
+        private LineSeries SumPerDay(int year, int month, List<Consumption> currentConsumptions)
+        {
+            ChartValues<ObservablePoint> points = new ChartValues<ObservablePoint>();
+            int amountDays = DateTime.DaysInMonth(year, month);
+            double sumPerDay = 0;
+
+            for (int i = 0; i <= amountDays; i++)
+            {
+                List<Consumption> consumptionsPerDay = new List<Consumption>();
+                foreach (Consumption consumption in currentConsumptions)
+                {
+                    if (consumption.Date.Day == i)
+                        consumptionsPerDay.Add(consumption);
+                }
+
+                foreach (Consumption consumption in consumptionsPerDay)
+                    sumPerDay += consumption.Money;
+
+                points.Add(new ObservablePoint(i, sumPerDay));
+                sumPerDay = 0;
+            }
+
+            return new LineSeries
+            {
+                Title = "Сумма затрат за день",
+                Values = points
+            };
+        }
+
+        private LineSeries AmountPerDay(int year, int month, List<Consumption> currentConsumptions)
+        {
+            ChartValues<ObservablePoint> points = new ChartValues<ObservablePoint>();
+            int amountDays = DateTime.DaysInMonth(year, month);
+            int amountPerDay = 0;
+
+            for (int i = 0; i <= amountDays; i++)
+            {
+                foreach (Consumption consumption in currentConsumptions)
+                {
+                    if (consumption.Date.Day == i)
+                        amountPerDay++;
+                }
+
+                points.Add(new ObservablePoint(i, amountPerDay));
+                amountPerDay = 0;
+            }
+
+            return new LineSeries
+            {
+                Title = "Колличество чеков за день",
+                Values = points
+            };
         }
 
         private void UpdateForYear(object? sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            Statistic? statistic = sender as Statistic;
+            UpadateVisible(statistic);
+
+            int year = int.Parse(statistic.Year.Text);
+
+            List<Consumption> currentConsumptions = new List<Consumption>();
+
+            foreach (Consumption consumption in consumptions)
+            {
+                if (consumption.Date.Year == year)
+                    currentConsumptions.Add(consumption);
+            }
+
+            if (currentConsumptions.Count < 1)
+                throw new ApplicationException();
+
+            List<LineSeries> charlesSeries = new List<LineSeries>()
+            {
+                AmountPerMonth(currentConsumptions),
+                SumPerMonth(currentConsumptions),
+            };
+
+            GenerateStatistic(statistic, charlesSeries);
+        }
+
+        private LineSeries AmountPerMonth(List<Consumption> currentConsumptions)
+        {
+            ChartValues<ObservablePoint> points = new ChartValues<ObservablePoint>();
+            int amountPerMonth = 0;
+
+            for (int i = 0; i <= 12; i++)
+            {
+                foreach (Consumption consumption in currentConsumptions)
+                {
+                    if (consumption.Date.Month == i)
+                        amountPerMonth++;
+                }
+
+                points.Add(new ObservablePoint(i, amountPerMonth));
+                amountPerMonth = 0;
+            }
+
+            return new LineSeries
+            {
+                Title = "Колличество чеков за день",
+                Values = points
+            };
+        }
+
+        private LineSeries SumPerMonth(List<Consumption> currentConsumptions)
+        {
+            ChartValues<ObservablePoint> points = new ChartValues<ObservablePoint>();
+            double sumPerMonth = 0;
+
+            for (int i = 0; i <= 12; i++)
+            {
+                List<Consumption> consumptionsPerMonth = new List<Consumption>();
+                foreach (Consumption consumption in currentConsumptions)
+                {
+                    if (consumption.Date.Month == i)
+                        consumptionsPerMonth.Add(consumption);
+                }
+
+                foreach (Consumption consumption in consumptionsPerMonth)
+                    sumPerMonth += consumption.Money;
+
+                points.Add(new ObservablePoint(i, sumPerMonth));
+                sumPerMonth = 0;
+            }
+
+            return new LineSeries
+            {
+                Title = "Сумма затрат за день",
+                Values = points
+            };
+        }
+
+        private void GenerateStatistic(Statistic? statistic, List<LineSeries> charlesSeries)
+        {
+            SeriesCollection series = new SeriesCollection();
+
+            foreach (LineSeries lineSeries in charlesSeries)
+                series.Add(lineSeries);
+
+            statistic.Chart.Series = series;
+        }
+
+        private void UpadateVisible(Statistic? statistic)
+        {
+            statistic.Chart.Visibility = Visibility.Visible;
+            statistic.NotExists.Visibility = Visibility.Hidden;
         }
         #endregion
     }

@@ -5,10 +5,16 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Icons\wallet_payment_purchase_coin_cash_money_icon_141978.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Icons\searching.png" />
+    <None Remove="wallet_payment_purchase_coin_cash_money_icon_141978.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Icons\wallet_payment_purchase_coin_cash_money_icon_141978.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,6 +24,7 @@
 
   <ItemGroup>
     <Resource Include="Icons\searching.png" />
+    <Resource Include="wallet_payment_purchase_coin_cash_money_icon_141978.png" />
   </ItemGroup>
 
 </Project>

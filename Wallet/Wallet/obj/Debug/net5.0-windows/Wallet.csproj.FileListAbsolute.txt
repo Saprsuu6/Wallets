@@ -60,3 +60,4 @@ C:\Users\coffe\Desktop\Wallets\Wallet\Wallet\obj\Debug\net5.0-windows\Statistic.
 C:\Users\coffe\Desktop\Wallets\Wallet\Wallet\bin\Debug\net5.0-windows\LiveCharts.dll
 C:\Users\coffe\Desktop\Wallets\Wallet\Wallet\bin\Debug\net5.0-windows\LiveCharts.Wpf.dll
 C:\Users\coffe\Desktop\Wallets\Wallet\Wallet\obj\Debug\net5.0-windows\Wallet.csproj.CopyComplete
+C:\Users\coffe\Desktop\Wallets\Wallet\Wallet\obj\Debug\net5.0-windows\Wallet_Content.g.cs

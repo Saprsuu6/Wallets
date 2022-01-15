@@ -6,7 +6,7 @@
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:local="clr-namespace:Wallet"
         mc:Ignorable="d"
-        Title="Statistic" Height="250" Width="350"
+        Title="Statistic" Height="300" Width="400"
         WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="NoResize">
     <Window.Resources>
         <Style TargetType="Button">
@@ -32,8 +32,12 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <lvc:CartesianChart Name="Chart"
+            <lvc:CartesianChart Name="Chart" Visibility="Visible"
             Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="0" Margin="10"/>
+
+            <TextBlock Visibility="Hidden" Name="NotExists" Text="Информация не найдена." 
+                       VerticalAlignment="Center" HorizontalAlignment="Center"
+                       Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="0" Margin="10"/>
 
             <Button Content="Нaзад" Grid.Row="1" Grid.Column="0" Click="Button_Click"/>
             <Menu Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center">
@@ -44,10 +48,6 @@
 
                     <MenuItem Header="Месяц">
                         <TextBox Name="Month" Width="150" TextChanged="Month_TextChanged"/>
-                    </MenuItem>
-
-                    <MenuItem Header="День">
-                        <TextBox Name="Day" Width="150" TextChanged="Day_TextChanged"/>
                     </MenuItem>
                 </MenuItem>
             </Menu>

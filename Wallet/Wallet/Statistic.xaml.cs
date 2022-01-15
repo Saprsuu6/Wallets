@@ -26,7 +26,6 @@ namespace Wallet
 
         public event EventHandler<EventArgs>? year = null;
         public event EventHandler<EventArgs>? month = null;
-        public event EventHandler<EventArgs>? day = null;
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -35,17 +34,51 @@ namespace Wallet
 
         private void Year_TextChanged(object sender, TextChangedEventArgs e)
         {
+            TextChange(sender as TextBox);
 
+            try
+            {
+                year?.Invoke(this, new EventArgs());
+            }
+            catch (Exception)
+            {
+                Chart.Visibility = Visibility.Hidden;
+                NotExists.Visibility = Visibility.Visible;
+            }
         }
 
         private void Month_TextChanged(object sender, TextChangedEventArgs e)
         {
+            TextChange(sender as TextBox);
 
+            try
+            {
+                month?.Invoke(this, new EventArgs());
+            }
+            catch (Exception)
+            {
+                Chart.Visibility = Visibility.Hidden;
+                NotExists.Visibility = Visibility.Visible;
+            }
         }
 
-        private void Day_TextChanged(object sender, TextChangedEventArgs e)
+        private void TextChange(TextBox? box)
         {
+            box.Text = box.Text.Trim();
 
+            if (box.Text.Length == 0)
+            {
+                switch (box.Name)
+                {
+                    case "Year":
+                        box.Text = DateTime.Now.Year.ToString();
+                        break;
+
+                    case "Month":
+                        box.Text = DateTime.Now.Month.ToString();
+                        break;
+                }
+            }
         }
     }
 }

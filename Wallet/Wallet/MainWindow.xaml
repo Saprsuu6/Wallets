@@ -7,7 +7,7 @@
          mc:Ignorable="d"
          Title="MainWindow" Height="420" Width="450"
          WindowStartupLocation="CenterScreen" Loaded="Window_Loaded"
-         MaxHeight="420" MaxWidth="450" MinHeight="420" MinWidth="450" Closing="Window_Closing">
+         MaxHeight="420" MaxWidth="450" MinHeight="420" MinWidth="450" Closing="Window_Closing" Icon="/wallet_payment_purchase_coin_cash_money_icon_141978.png">
     <Window.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="FontSize" Value="15"/>
